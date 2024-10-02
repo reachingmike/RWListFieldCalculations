@@ -42,8 +42,19 @@ gform.addFilter( 'gform_merge_tag_value_pre_calculation', function( value, merge
                 
             // if column specified get the input values from each row and calculate the sum
             jQuery( columnSelector ).each( function () {
-                cellValue = gformToNumber( jQuery( this ).val() );
-                value += parseFloat( cellValue ) || 0;
+                let rawValue = jQuery( this ).val().trim();  // Trim spaces
+                let cellValue = parseFloat(rawValue);  // Convert to number
+            
+                if ( isNaN(cellValue) ) {
+                    console.log("Skipping invalid or empty value:", rawValue);
+                    return;
+                }
+            
+                console.log("Original Value:", rawValue, "Converted Numeric Value:", cellValue);
+            
+                // Force numeric addition using Number()
+                value = Number(value) + Number(cellValue); 
+                console.log("Current Sum:", value);  // Log the cumulative sum after each iteration
             });
         }
 
